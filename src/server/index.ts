@@ -1,27 +1,32 @@
 import http from 'http';
 
 import { Logger } from 'pino';
-import { Container } from '../container';
+import { AppCradle } from '../container';
 import { Disposable } from '../core/disposing';
+import { AppConfig } from '../core/environment';
 
 export class Server implements Disposable {
+  private appConfig: AppConfig;
   private logger: Logger;
   private serverInstance: http.Server | null;
 
-  public constructor({ logger }: Container) {
+  public constructor({ logger, appConfig }: AppCradle) {
+    this.appConfig = appConfig;
     this.logger = logger;
     this.serverInstance = null;
   }
 
   public start(): void {
+    const { port } = this.appConfig.server;
+
     this.serverInstance = http.createServer((req, res) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ hello: 'world' }));
     });
 
-    this.serverInstance.listen(3000, () => {
-      this.logger.info('Server running at port 3000.');
+    this.serverInstance.listen(port, () => {
+      this.logger.info(`Server running at port ${port}`);
     });
   }
 

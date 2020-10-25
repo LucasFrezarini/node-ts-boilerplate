@@ -6,15 +6,17 @@
   "scripts": {
     "build": "npm run clear && tsc",
     "clear": "rimraf ./dist",
-    "dev": "nodemon --exec 'ts-node' src/app.ts",
+    "dev": "env-cmd nodemon --exec 'ts-node' src/app.ts | pino-pretty -t SYS:standard -i hostname,pid",
     "lint": "eslint . --ext ts,json --fix",
-    "start": "ts-node src/app.ts"
+    "start": "env-cmd ts-node src/app.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/pino": "^6.3.3",
+    "@types/verror": "^1.10.4",
+    "@types/yup": "^0.29.8",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.4.1",
     "eslint": "^7.11.0",
@@ -23,6 +25,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.4.2",
     "nodemon": "^2.0.5",
+    "pino-pretty": "^4.3.0",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "ts-node": "^9.0.0",
@@ -38,6 +41,9 @@
   },
   "dependencies": {
     "awilix": "^4.2.7",
-    "pino": "^6.7.0"
+    "env-cmd": "^10.1.0",
+    "pino": "^6.7.0",
+    "verror": "^1.10.0",
+    "yup": "^0.29.3"
   }
 }
