@@ -10,6 +10,8 @@ export interface ServerConfig {
   port: number;
 }
 
+export type Env = Record<string, string | undefined>;
+
 const envSchema = yup
   .object()
   .shape({
@@ -22,9 +24,9 @@ const envSchema = yup
   })
   .required();
 
-export const getAppConfig = async (): Promise<AppConfig> => {
+export const getAppConfig = async (env: Env): Promise<AppConfig> => {
   try {
-    return await parseEnvironmentVariables();
+    return await parseEnvironmentVariables(env);
   } catch (err) {
     throw new VError(
       {
@@ -35,10 +37,10 @@ export const getAppConfig = async (): Promise<AppConfig> => {
   }
 };
 
-const parseEnvironmentVariables = async (): Promise<AppConfig> => {
+const parseEnvironmentVariables = async (env: Env): Promise<AppConfig> => {
   const environmentVars = await envSchema.validate({
-    SERVER_PORT: process.env.SERVER_PORT,
-    NODE_ENV: process.env.NODE_ENV,
+    SERVER_PORT: env.SERVER_PORT,
+    NODE_ENV: env.NODE_ENV,
   });
 
   return {

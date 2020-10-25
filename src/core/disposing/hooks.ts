@@ -1,4 +1,3 @@
-import { AwilixContainer } from 'awilix';
 import { Logger } from 'pino';
 import { AppContainer } from '../../container';
 

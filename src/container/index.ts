@@ -29,7 +29,7 @@ export const createAppContainer = async (): Promise<
   const container = createContainer<AppCradle>();
 
   try {
-    const appConfig = await getAppConfig();
+    const appConfig = await getAppConfig(process.env);
 
     container.register({
       appConfig: asValue(appConfig),
