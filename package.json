@@ -8,7 +8,7 @@
     "clear": "rimraf ./dist",
     "dev": "env-cmd nodemon --exec 'ts-node' src/app.ts | pino-pretty -t SYS:standard -i hostname,pid",
     "lint": "eslint . --ext ts,json --fix",
-    "start": "env-cmd ts-node src/app.ts",
+    "start": "env-cmd ts-node dist/app.js",
     "test": "env-cmd -f .env.test ava",
     "coverage": "nyc npm run test"
   },
