@@ -23,9 +23,9 @@ export type AppContainer = AwilixContainer<AppCradle>;
 const disposeHandler = (module: Disposable): void | Promise<void> =>
   module.dispose();
 
-export const createAppContainer = async (): Promise<
-  AwilixContainer<AppCradle>
-> => {
+export const createAppContainer = async (
+  overrides?: Record<string, unknown>
+): Promise<AwilixContainer<AppCradle>> => {
   const container = createContainer<AppCradle>();
 
   try {
@@ -35,6 +35,7 @@ export const createAppContainer = async (): Promise<
       appConfig: asValue(appConfig),
       logger: asFunction(getLogger).singleton(),
       server: asClass(Server).singleton().disposer(disposeHandler),
+      ...overrides,
     });
 
     return container;

@@ -9,7 +9,8 @@
     "dev": "env-cmd nodemon --exec 'ts-node' src/app.ts | pino-pretty -t SYS:standard -i hostname,pid",
     "lint": "eslint . --ext ts,json --fix",
     "start": "env-cmd ts-node src/app.ts",
-    "test": "ava"
+    "test": "env-cmd -f .env.test ava",
+    "coverage": "nyc npm run test"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +28,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.4.2",
     "nodemon": "^2.0.5",
+    "nyc": "^15.1.0",
     "pino-pretty": "^4.3.0",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.2",

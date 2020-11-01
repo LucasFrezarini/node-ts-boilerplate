@@ -1,3 +1,4 @@
+import { Logger } from 'pino';
 import { createAppContainer } from './container';
 import { appendProcessExitListeners } from './core/disposing';
 import { Server } from './server';
@@ -5,7 +6,12 @@ import { Server } from './server';
 const init = async () => {
   try {
     const container = await createAppContainer();
-    appendProcessExitListeners(container);
+    appendProcessExitListeners(process, () => {
+      const logger = container.resolve<Logger>('logger');
+      logger.info('Disposing app...');
+
+      container.dispose();
+    });
 
     const server = container.resolve<Server>('server');
     server.start();
