@@ -11,11 +11,16 @@ import { Disposable } from '../core/disposing';
 import { AppConfig, getAppConfig } from '../core/environment';
 import { Server } from '../server';
 import { getLogger } from '../utils/logger';
+import { UserController, UserService } from '../modules/users';
+import { Controller } from '../server/controller';
 
 export interface AppCradle {
   appConfig: AppConfig;
   logger: Logger;
   server: Server;
+
+  userController: Controller;
+  userService: UserService;
 }
 
 export type AppContainer = AwilixContainer<AppCradle>;
@@ -35,6 +40,8 @@ export const createAppContainer = async (
       appConfig: asValue(appConfig),
       logger: asFunction(getLogger).singleton(),
       server: asClass(Server).singleton().disposer(disposeHandler),
+      userController: asClass(UserController).singleton(),
+      userService: asClass(UserService).singleton(),
       ...overrides,
     });
 
