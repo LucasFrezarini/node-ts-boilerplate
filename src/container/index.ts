@@ -13,9 +13,11 @@ import { Server } from '../server';
 import { getLogger } from '../utils/logger';
 import { UserController, UserService } from '../modules/users';
 import { Controller } from '../server/controller';
+import { getAppRoutes, AppRoutes } from '../server/routes';
 
 export interface AppCradle {
   appConfig: AppConfig;
+  appRoutes: AppRoutes;
   logger: Logger;
   server: Server;
 
@@ -42,6 +44,7 @@ export const createAppContainer = async (
       server: asClass(Server).singleton().disposer(disposeHandler),
       userController: asClass(UserController).singleton(),
       userService: asClass(UserService).singleton(),
+      appRoutes: asFunction(getAppRoutes).singleton(),
       ...overrides,
     });
 

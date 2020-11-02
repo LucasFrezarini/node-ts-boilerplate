@@ -7,22 +7,19 @@ import { Logger } from 'pino';
 import { AppCradle } from '../container';
 import { Disposable } from '../core/disposing';
 import { AppConfig } from '../core/environment';
-import { Controller } from './controller';
+import { AppRoutes } from './routes';
 
 export class Server implements Disposable {
   private appConfig: AppConfig;
   private logger: Logger;
   private serverInstance: http.Server | null;
-  private controllers: Record<string, Controller>;
+  private appRoutes: AppRoutes;
 
-  public constructor({ logger, appConfig, userController }: AppCradle) {
+  public constructor({ logger, appConfig, appRoutes }: AppCradle) {
     this.appConfig = appConfig;
     this.logger = logger;
     this.serverInstance = null;
-
-    this.controllers = {
-      '/users': userController,
-    };
+    this.appRoutes = appRoutes;
   }
 
   public start(): void {
@@ -34,9 +31,7 @@ export class Server implements Disposable {
     app.use(express.urlencoded({ extended: true }));
     app.use(pinoHttp({ logger: this.logger }));
 
-    Object.keys(this.controllers).forEach((basePath) =>
-      app.use(basePath, this.controllers[basePath].getRouter())
-    );
+    this.appRoutes.forEach((router, path) => app.use(path, router));
 
     this.serverInstance = http.createServer(app);
 
