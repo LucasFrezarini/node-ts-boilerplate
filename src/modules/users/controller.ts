@@ -1,14 +1,13 @@
 import { Request, Response, Router } from 'express';
 import { Logger } from 'pino';
 import { UserService } from '.';
-import { AppCradle } from '../../container';
 import { Controller } from '../../server/controller';
 
 export class UserController implements Controller {
   private logger: Logger;
   private userService: UserService;
 
-  public constructor({ logger, userService }: AppCradle) {
+  public constructor(logger: Logger, userService: UserService) {
     this.logger = logger;
     this.userService = userService;
   }

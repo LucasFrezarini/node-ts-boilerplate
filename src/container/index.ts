@@ -4,6 +4,7 @@ import {
   asValue,
   AwilixContainer,
   createContainer,
+  InjectionMode,
 } from 'awilix';
 import { Logger } from 'pino';
 import VError from 'verror';
@@ -33,18 +34,20 @@ const disposeHandler = (module: Disposable): void | Promise<void> =>
 export const createAppContainer = async (
   overrides?: Record<string, unknown>
 ): Promise<AwilixContainer<AppCradle>> => {
-  const container = createContainer<AppCradle>();
+  const container = createContainer<AppCradle>({
+    injectionMode: InjectionMode.CLASSIC,
+  });
 
   try {
     const appConfig = await getAppConfig(process.env);
 
     container.register({
       appConfig: asValue(appConfig),
-      logger: asFunction(getLogger).singleton(),
+      logger: asFunction(getLogger).proxy().singleton(),
       server: asClass(Server).singleton().disposer(disposeHandler),
       userController: asClass(UserController).singleton(),
       userService: asClass(UserService).singleton(),
-      appRoutes: asFunction(getAppRoutes).singleton(),
+      appRoutes: asFunction(getAppRoutes).proxy().singleton(),
       ...overrides,
     });
 

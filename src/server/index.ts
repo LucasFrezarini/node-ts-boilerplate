@@ -4,7 +4,7 @@ import pinoHttp from 'pino-http';
 import helmet from 'helmet';
 
 import { Logger } from 'pino';
-import { AppCradle } from '../container';
+import { AppContainer, AppCradle } from '../container';
 import { Disposable } from '../core/disposing';
 import { AppConfig } from '../core/environment';
 import { AppRoutes } from './routes';
@@ -15,7 +15,11 @@ export class Server implements Disposable {
   private serverInstance: http.Server | null;
   private appRoutes: AppRoutes;
 
-  public constructor({ logger, appConfig, appRoutes }: AppCradle) {
+  public constructor(
+    logger: Logger,
+    appConfig: AppConfig,
+    appRoutes: AppRoutes
+  ) {
     this.appConfig = appConfig;
     this.logger = logger;
     this.serverInstance = null;

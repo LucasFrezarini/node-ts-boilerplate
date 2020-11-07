@@ -1,7 +1,6 @@
 import { Logger } from 'pino';
-import { AppCradle } from '../../container';
 
-interface User {
+export interface User {
   id: number;
   first_name: string;
   last_name: string;
@@ -26,7 +25,7 @@ const users = [
 export class UserService {
   private logger: Logger;
 
-  public constructor({ logger }: AppCradle) {
+  public constructor(logger: Logger) {
     this.logger = logger;
   }
 
