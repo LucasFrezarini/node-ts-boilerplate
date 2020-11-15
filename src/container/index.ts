@@ -10,13 +10,19 @@ import { Logger } from 'pino';
 import VError from 'verror';
 import { Disposable } from '../core/disposing';
 import { AppConfig, getAppConfig } from '../core/environment';
+import { UserController } from '../modules/users/controller';
+import { UserService } from '../modules/users/service';
 import { Server } from '../server';
+import { getRouteLoader, RouteLoader } from '../server/routes';
 import { getLogger } from '../utils/logger';
 
 export interface AppCradle {
   appConfig: AppConfig;
   logger: Logger;
   server: Server;
+  registerRoutes: RouteLoader;
+  userController: UserController;
+  userService: UserService;
 }
 
 export type AppContainer = AwilixContainer<AppCradle>;
@@ -38,6 +44,9 @@ export const createAppContainer = async (
       appConfig: asValue(appConfig),
       logger: asFunction(getLogger).singleton(),
       server: asClass(Server).singleton().disposer(disposeHandler),
+      registerRoutes: asFunction(getRouteLoader).proxy().singleton(),
+      userController: asClass(UserController).singleton(),
+      userService: asClass(UserService).singleton(),
       ...overrides,
     });
 

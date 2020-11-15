@@ -16,7 +16,7 @@ const init = async () => {
     const server = container.resolve<Server>('server');
     server.start();
   } catch (err) {
-    // the logger wans't initialized successfully, so we have to use console.error
+    // the logger wasn't initialized successfully, so we have to use console.error
     // eslint-disable-next-line no-console
     console.error('Error while starting the app', err);
     process.exit(1);

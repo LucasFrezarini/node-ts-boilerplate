@@ -54,6 +54,7 @@
   "dependencies": {
     "awilix": "^4.2.7",
     "env-cmd": "^10.1.0",
+    "fastify": "^3.8.0",
     "pino": "^6.7.0",
     "verror": "^1.10.0",
     "yup": "^0.29.3"
