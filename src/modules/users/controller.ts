@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyRequest } from 'fastify';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { Logger } from 'pino';
 import { User, UserService } from './service';
 
@@ -18,11 +18,17 @@ export class UserController {
   }
 
   public async getById(
-    req: FastifyRequest<GetByIdRequest>
-  ): Promise<User | undefined> {
+    req: FastifyRequest<GetByIdRequest>,
+    reply: FastifyReply
+  ): Promise<User> {
     const { id } = req.params;
 
-    return this.userService.getUserById(id);
+    const user = this.userService.getUserById(id);
+    if (!user) {
+      return reply.status(404).send({ msg: 'user not found' });
+    }
+
+    return user;
   }
 
   public async registerRoutes(server: FastifyInstance): Promise<void> {
