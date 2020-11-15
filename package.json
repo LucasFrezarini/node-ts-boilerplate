@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run clear && tsc",
+    "compile-schemas": "rimraf ./types/generated && json2ts -i src/**/schemas/**/*.json -o types/generated",
     "clear": "rimraf ./dist",
     "dev": "env-cmd nodemon --exec 'ts-node' src/app.ts | pino-pretty -t SYS:standard -i hostname,pid",
     "lint": "eslint . --ext ts,json --fix",
@@ -26,6 +27,7 @@
     "eslint-config-prettier": "^6.13.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.3.0",
+    "json-schema-to-typescript": "^9.1.1",
     "lint-staged": "^10.4.2",
     "nodemon": "^2.0.5",
     "nyc": "^15.1.0",

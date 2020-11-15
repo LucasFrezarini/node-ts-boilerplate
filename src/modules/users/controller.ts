@@ -1,16 +1,8 @@
-import {
-  FastifyInstance,
-  FastifyRequest,
-  RequestGenericInterface,
-} from 'fastify';
+import { FastifyInstance, FastifyRequest } from 'fastify';
 import { Logger } from 'pino';
 import { User, UserService } from './service';
 
-interface RequestGeneric extends RequestGenericInterface {
-  Params: {
-    id: number;
-  };
-}
+import { GetByIdRequest, schema as getByIdSchema } from './schemas/get-by-id';
 
 export class UserController {
   private userService: UserService;
@@ -26,7 +18,7 @@ export class UserController {
   }
 
   public async getById(
-    req: FastifyRequest<RequestGeneric>
+    req: FastifyRequest<GetByIdRequest>
   ): Promise<User | undefined> {
     const { id } = req.params;
 
@@ -35,7 +27,7 @@ export class UserController {
 
   public async registerRoutes(server: FastifyInstance): Promise<void> {
     server.get('/', this.getAll.bind(this));
-    server.get('/:id', this.getById.bind(this));
+    server.get('/:id', { schema: getByIdSchema }, this.getById.bind(this));
 
     this.logger.debug('Registered UserController routes');
   }
