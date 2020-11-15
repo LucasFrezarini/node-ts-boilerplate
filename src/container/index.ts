@@ -4,6 +4,7 @@ import {
   asValue,
   AwilixContainer,
   createContainer,
+  InjectionMode,
 } from 'awilix';
 import { Logger } from 'pino';
 import VError from 'verror';
@@ -26,7 +27,9 @@ const disposeHandler = (module: Disposable): void | Promise<void> =>
 export const createAppContainer = async (
   overrides?: Record<string, unknown>
 ): Promise<AwilixContainer<AppCradle>> => {
-  const container = createContainer<AppCradle>();
+  const container = createContainer<AppCradle>({
+    injectionMode: InjectionMode.CLASSIC,
+  });
 
   try {
     const appConfig = await getAppConfig(process.env);

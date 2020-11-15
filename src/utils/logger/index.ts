@@ -1,7 +1,7 @@
 import pino from 'pino';
-import { AppCradle } from '../../container';
+import { AppConfig } from '../../core/environment';
 
-export const getLogger = ({ appConfig }: AppCradle): pino.Logger => {
+export const getLogger = (appConfig: AppConfig): pino.Logger => {
   return pino({
     level: appConfig.env === 'test' ? 'silent' : 'info',
   });

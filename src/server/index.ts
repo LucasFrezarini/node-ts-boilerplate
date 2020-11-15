@@ -1,7 +1,6 @@
 import http from 'http';
 
 import { Logger } from 'pino';
-import { AppCradle } from '../container';
 import { Disposable } from '../core/disposing';
 import { AppConfig } from '../core/environment';
 
@@ -10,7 +9,7 @@ export class Server implements Disposable {
   private logger: Logger;
   private serverInstance: http.Server | null;
 
-  public constructor({ logger, appConfig }: AppCradle) {
+  public constructor(logger: Logger, appConfig: AppConfig) {
     this.appConfig = appConfig;
     this.logger = logger;
     this.serverInstance = null;
